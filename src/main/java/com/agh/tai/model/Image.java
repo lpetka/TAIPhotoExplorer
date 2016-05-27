@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Image
 {
     @JsonProperty("data")
-    private Data data;
+    private ImageData imageData;
 
     @JsonProperty("success")
     private boolean success;
@@ -15,8 +15,8 @@ public class Image
     @JsonProperty("status")
     private int status;
 
-    public Image(Data data, boolean success, int status) {
-        this.data = data;
+    public Image(ImageData imageData, boolean success, int status) {
+        this.imageData = imageData;
         this.success = success;
         this.status = status;
     }
@@ -26,12 +26,12 @@ public class Image
 
     }
 
-    public Data getData() {
-        return data;
+    public ImageData getImageData() {
+        return imageData;
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public void setImageData(ImageData imageData) {
+        this.imageData = imageData;
     }
 
     public boolean isSuccess() {

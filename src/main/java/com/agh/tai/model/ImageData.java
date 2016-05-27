@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Data {
+public class ImageData {
 
     @JsonProperty("id")
     private String id;
@@ -60,12 +60,12 @@ public class Data {
     private boolean inGallery;
 
 
-    public Data()
+    public ImageData()
     {
 
     }
 
-    public Data(String id, String title, String descripton, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String section, String link, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
+    public ImageData(String id, String title, String descripton, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String section, String link, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
         this.id = id;
         this.title = title;
         this.descripton = descripton;
