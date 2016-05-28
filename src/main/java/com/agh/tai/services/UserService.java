@@ -1,7 +1,6 @@
 package com.agh.tai.services;
 
-import com.agh.tai.model.ImagesList;
-import com.agh.tai.model.Image;
+import com.agh.tai.model.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -25,9 +24,10 @@ public class UserService {
         this.userName = userName;
     }
 
-    public void getImageByID(int id)
+    public void getImageByID(String id)
     {
-        System.out.println(String.format("\nAchieving image with id %d............", id));
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Achieving image with id %s...\n", id));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", CLIENT_ID);
@@ -36,22 +36,23 @@ public class UserService {
 
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%d", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
-            System.out.println(String.format("\nYour image is here: %s", response.getBody().getImageData().getLink()));
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
         }
         catch (HttpClientErrorException e)
         {
-            System.out.println(String.format("Error occured during geting image with id %d", id));
+            System.out.println(String.format("Error occurred during geting image with id %s", id));
             e.printStackTrace();
         }
     }
 
-    public void uploadImageAnonymouslyByUrl(String filePath)
+    public ImageData uploadImageByUrl(String filePath)
     {
-        System.out.println(String.format("\nAdding image located %s............", filePath));
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Adding image located %s...\n", filePath));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", CLIENT_ID);
+        headers.add("Authorization", token);
 
         MultiValueMap<String,String> parameters = new LinkedMultiValueMap<String,String>();
         parameters.add("image", filePath);
@@ -61,21 +62,48 @@ public class UserService {
         HttpEntity<MultiValueMap<String,String>> entity =
                 new HttpEntity<MultiValueMap<String, String>>(parameters, headers);
 
+        ResponseEntity<Image> response = null;
+
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
-            System.out.println(String.format("\nYour image is here: %s", response.getBody().getImageData().getLink()));
+            response = restTemplate.exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
+            System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
         }
         catch (HttpClientErrorException e)
         {
-            System.out.println(String.format("Error occured during uploading image under %s", filePath));
+            System.out.println(String.format("Error occurred during uploading image under %s", filePath));
+            e.printStackTrace();
+        }
+
+        return response.getBody().getImageData();
+    }
+
+    public void deleteImageById(String imageId)
+    {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Deleting image with id %s...\n", imageId));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, imageId), HttpMethod.DELETE, new HttpEntity<Object>(headers), Basic.class);
+            System.out.println(String.format("Is your image deleted? : %s", String.valueOf(response.getBody().isData())));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during deletion of the image with id %s", imageId));
             e.printStackTrace();
         }
     }
 
     public void getUserFavourites()
     {
-        System.out.println(String.format("\nGeting %s favorite images............", userName));
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Getting %s favorite images...\n", userName));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
@@ -85,18 +113,19 @@ public class UserService {
         try
         {
             ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
-            System.out.println(String.format("\nYour favourite images collection has %d elemtents", response.getBody().getImages().size()));
+            System.out.println(String.format("Your favourite images collection has %d elemtents", response.getBody().getImages().size()));
         }
         catch (HttpClientErrorException e)
         {
-            System.out.println(String.format("Error occured during getting favorite images of %s", userName));
+            System.out.println(String.format("Error occurred during getting favorite images of %s", userName));
             e.printStackTrace();
         }
     }
 
     public void getUserImages(int page)
     {
-        System.out.println(String.format("\nGeting %s images............", userName));
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Getting %s images...\n", userName));
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
@@ -106,11 +135,11 @@ public class UserService {
         try
         {
             ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/images/%d", REST_SERVICE_URI, userName, page), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
-            System.out.println(String.format("\nYour images collection has %d elemtents", response.getBody().getImages().size()));
+            System.out.println(String.format("Your images collection has %d elemtents", response.getBody().getImages().size()));
         }
         catch (HttpClientErrorException e)
         {
-            System.out.println(String.format("Error occured during getting images of %s", userName));
+            System.out.println(String.format("Error occurred during getting images of %s", userName));
             e.printStackTrace();
         }
     }
