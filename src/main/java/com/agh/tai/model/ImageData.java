@@ -14,8 +14,8 @@ public class ImageData {
     @JsonProperty("title")
     private String title;
 
-    @JsonProperty("descripton")
-    private String descripton;
+    @JsonProperty("description")
+    private String description;
 
     @JsonProperty("datetime")
     private BigDecimal datetime;
@@ -89,10 +89,10 @@ public class ImageData {
 
     }
 
-    public ImageData(String id, String title, String descripton, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
+    public ImageData(String id, String title, String description, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
         this.id = id;
         this.title = title;
-        this.descripton = descripton;
+        this.description = description;
         this.datetime = datetime;
         this.type = type;
         this.animated = animated;
@@ -133,12 +133,12 @@ public class ImageData {
         this.title = title;
     }
 
-    public String getDescripton() {
-        return descripton;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescripton(String descripton) {
-        this.descripton = descripton;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public BigDecimal getDatetime() {

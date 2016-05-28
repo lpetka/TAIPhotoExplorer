@@ -165,4 +165,26 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public void voteForImage(String imageId, String vote)
+    {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Voting fot the image with id #%s...\n", imageId));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/gallery/image/%s/vote/%s", REST_SERVICE_URI, imageId, vote), HttpMethod.POST, new HttpEntity<Object>(headers), Basic.class);
+            System.out.println(String.format("Is voting completed? : #%s", String.valueOf(response.getBody().isData())));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during voting for iamge with id #%s images", imageId));
+            e.printStackTrace();
+        }
+    }
 }
