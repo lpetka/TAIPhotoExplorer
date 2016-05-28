@@ -41,11 +41,35 @@ public class ImageData {
     @JsonProperty("bandwidth")
     private BigDecimal bandwidth;
 
+    @JsonProperty("deletehash")
+    private String deletehash;
+
+    @JsonProperty("name")
+    private String name;
+
     @JsonProperty("section")
     private String section;
 
     @JsonProperty("link")
     private String link;
+
+    @JsonProperty("gifv")
+    private String gifv;
+
+    @JsonProperty("mp4")
+    private String mp4;
+
+    @JsonProperty("webm")
+    private String webm;
+
+    @JsonProperty("mp4_size")
+    private BigDecimal mp4Size;
+
+    @JsonProperty("webm_size")
+    private BigDecimal webmSize;
+
+    @JsonProperty("looping")
+    private boolean looping;
 
     @JsonProperty("favorite")
     private boolean favorite;
@@ -65,7 +89,7 @@ public class ImageData {
 
     }
 
-    public ImageData(String id, String title, String descripton, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String section, String link, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
+    public ImageData(String id, String title, String descripton, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
         this.id = id;
         this.title = title;
         this.descripton = descripton;
@@ -77,8 +101,16 @@ public class ImageData {
         this.size = size;
         this.views = views;
         this.bandwidth = bandwidth;
+        this.deletehash = deletehash;
+        this.name = name;
         this.section = section;
         this.link = link;
+        this.gifv = gifv;
+        this.mp4 = mp4;
+        this.webm = webm;
+        this.mp4Size = mp4Size;
+        this.webmSize = webmSize;
+        this.looping = looping;
         this.favorite = favorite;
         this.nsfw = nsfw;
         this.vote = vote;
@@ -173,6 +205,22 @@ public class ImageData {
         this.bandwidth = bandwidth;
     }
 
+    public String getDeletehash() {
+        return deletehash;
+    }
+
+    public void setDeletehash(String deletehash) {
+        this.deletehash = deletehash;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSection() {
         return section;
     }
@@ -187,6 +235,54 @@ public class ImageData {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getGifv() {
+        return gifv;
+    }
+
+    public void setGifv(String gifv) {
+        this.gifv = gifv;
+    }
+
+    public String getMp4() {
+        return mp4;
+    }
+
+    public void setMp4(String mp4) {
+        this.mp4 = mp4;
+    }
+
+    public String getWebm() {
+        return webm;
+    }
+
+    public void setWebm(String webm) {
+        this.webm = webm;
+    }
+
+    public BigDecimal getMp4Size() {
+        return mp4Size;
+    }
+
+    public void setMp4Size(BigDecimal mp4Size) {
+        this.mp4Size = mp4Size;
+    }
+
+    public BigDecimal getWebmSize() {
+        return webmSize;
+    }
+
+    public void setWebmSize(BigDecimal webmSize) {
+        this.webmSize = webmSize;
+    }
+
+    public boolean isLooping() {
+        return looping;
+    }
+
+    public void setLooping(boolean looping) {
+        this.looping = looping;
     }
 
     public boolean isFavorite() {
