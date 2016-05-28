@@ -93,4 +93,25 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public void getUserImages(int page)
+    {
+        System.out.println(String.format("\nGeting %s images............", userName));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/images/%d", REST_SERVICE_URI, userName, page), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
+            System.out.println(String.format("\nYour images collection has %d elemtents", response.getBody().getImages().size()));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occured during getting images of %s", userName));
+            e.printStackTrace();
+        }
+    }
 }
