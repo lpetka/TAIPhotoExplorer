@@ -72,4 +72,25 @@ public class UserService {
             e.printStackTrace();
         }
     }
+
+    public void getUserFavourites()
+    {
+        System.out.println(String.format("\nGeting %s favorite images............", userName));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
+            System.out.println(String.format("\nYour favourite images collection has %d elemtents", response.getBody().getImages().size()));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occured during getting favorite images of %s", userName));
+            e.printStackTrace();
+        }
+    }
 }
