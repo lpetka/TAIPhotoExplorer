@@ -1,9 +1,9 @@
 package com.agh.tai;
 
+import com.agh.tai.model.ImageData;
 import com.agh.tai.services.UserService;
 
 import java.util.Scanner;
-import java.util.StringJoiner;
 
 public class ApiCallsTests {
 
@@ -21,9 +21,14 @@ public class ApiCallsTests {
 
         UserService userService = new UserService(userName, accessToken);
 
-        userService.getImageByID(5324);
-        userService.uploadImageAnonymouslyByUrl("http://www.gojackal.com/wp-content/uploads/2015/09/Photoshop-Fail-17.jpg");
-        userService.getUserFavourites();
+        ImageData imageData = userService.uploadImageByUrl("http://www.gojackal.com/wp-content/uploads/2015/09/Photoshop-Fail-17.jpg");
         userService.getUserImages(0);
+        userService.getUserFavourites();
+        userService.deleteImageById(imageData.getId());
+        userService.getUserImages(0);
+        userService.getImagesByTag("cat", 2);
+        userService.getImageByID("vYRQxQa");
+        userService.voteForImage("vYRQxQa", "up");
+        userService.voteForImage("vYRQxQa", "down");
     }
 }
