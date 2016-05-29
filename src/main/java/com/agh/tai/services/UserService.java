@@ -10,8 +10,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-public class UserService {
-
+public class UserService implements IUserService
+{
     private static final String REST_SERVICE_URI = "https://api.imgur.com/3";
     private static final String CLIENT_ID = "Client-ID 6e099b0f1a86a15";
 
@@ -24,6 +24,7 @@ public class UserService {
         this.userName = userName;
     }
 
+    @Override
     public void getImageByID(String id)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -46,6 +47,7 @@ public class UserService {
         }
     }
 
+    @Override
     public ImageData uploadImageByUrl(String filePath)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -78,6 +80,7 @@ public class UserService {
         return response.getBody().getImageData();
     }
 
+    @Override
     public void deleteImageById(String imageId)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -100,6 +103,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void getUserFavourites()
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -122,6 +126,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void getUserImages(int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -144,6 +149,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void getImagesByTag(String tagName, int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
@@ -166,6 +172,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void voteForImage(String imageId, String vote)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
