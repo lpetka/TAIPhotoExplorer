@@ -36,4 +36,14 @@ public class SampleController {
         model.addAttribute("message", "Logged in as " + session.getAttribute("account_username"));
         return "index";
     }
+
+    @RequestMapping("/gallery")
+    String gallery(Model model) {
+        return "gallery";
+    }
+
+    @RequestMapping("/favourites")
+    String favourites(Model model) {
+        return "favourites";
+    }
 }
