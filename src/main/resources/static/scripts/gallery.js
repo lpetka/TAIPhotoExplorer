@@ -16,7 +16,11 @@ $(document).ready(function () {
 
     $('#uploadImage').click(function () {
         uploadImagefromUrl($('#imageUrl').val())
-    })
+    });
+
+    $('#toggleFavourite').click(function () {
+        toggleFavourites($('#imageId').text());
+    });
 });
 
 $(document).on('click','.imageContainer',function(e){
@@ -91,6 +95,38 @@ function uploadImagefromUrl(url) {
     });
 }
 
+function toggleFavourites(id) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/togglefavourite",
+        data: id,
+        success: function (result) {
+            toggleFavourite(result.response);
+        }
+    });
+}
+
+function toggleFavourite(state) {
+    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
+    if(state == "favorited") {
+        $('#buttonFavouritesText').text('Remove from favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
+    } else if(state == "unfavorited") {
+        $('#buttonFavouritesText').text('Add to favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
+    } else {
+
+    }
+}
+
 function uploadImage(imageData) {
     if(!!imageData) {
         location.reload()
@@ -137,12 +173,16 @@ function displayImageDetails(imageDetails) {
     table.find('#imageHeight').text(parseDetail(imageDetails.height));
     table.find('#imageVote').text(parseDetail(imageDetails.vote));
     table.find('#imageSize').text(parseDetail(imageDetails.size));
-    var imageFavouriteText = '';
-    if(parseDetail(imageDetails.favourite) === 'true')
-        imageFavouriteText = 'Yes';
-    else
-        imageFavouriteText = 'No';
-    table.find('#imageFavourite').text(imageFavouriteText);
+    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
+    if(imageDetails.favourite == true) {
+        $('#buttonFavouritesText').text('Remove from favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
+    } else {
+        $('#buttonFavouritesText').text('Add to favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
+    }
     table.find('#imageDetailsImage').empty();
     var imageToAdd = '<a href="'+imageDetails.link+'"><img class ="img-thumbnail" src="'+imageDetails.link+'"/></a>';
     table.find('#imageDetailsImage').append(imageToAdd);
