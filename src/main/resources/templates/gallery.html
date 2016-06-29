@@ -3,14 +3,17 @@
 <head lang="en">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Imgur App - User Gallery</title>
-    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.6/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.6/css/bootstrap.min.css}"
           rel="stylesheet" media="screen" />
 
     <link rel="stylesheet" th:href="@{/styles/gallery.css}" />
 
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
 
     <script src="../scripts/index.js" th:src="@{/scripts/gallery.js}"></script>
 </head>
@@ -75,6 +78,68 @@
 
 </div>
 <!-- /.container -->
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Image details</h4>
+            </div>
+            <div class="modal-body">
+                <table id="imageDetailsTable">
+                    <tr>
+                        <td id="imageDetailsImage" rowspan="7"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">ID:</td>
+                        <td id="imageId"></td>
+                        <td class="imageDetails">Views:</td>
+                        <td id="imageViews"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Title:</td>
+                        <td id="imageTitle"></td>
+                        <td class="imageDetails">Name:</td>
+                        <td id="imageName"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Description:</td>
+                        <td id="imageDescription"></td>
+                        <td class="imageDetails">Section:</td>
+                        <td id="imageSection"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Width:</td>
+                        <td id="imageWidth"></td>
+                        <td class="imageDetails">Link:</td>
+                        <td id="imageLink"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Height:</td>
+                        <td id="imageHeight"></td>
+                        <td class="imageDetails">Vote:</td>
+                        <td id="imageVote"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Size:</td>
+                        <td id="imageSize"></td>
+                        <td class="imageDetails">Favourite:</td>
+                        <td id="imageFavourite"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteImageButton" type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Delete Image
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
 

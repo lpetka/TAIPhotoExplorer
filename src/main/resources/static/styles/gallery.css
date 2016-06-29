@@ -1,7 +1,30 @@
 .imageContainer {
     display: inline;
+    cursor: pointer;
 }
+
 #imagesList > div > img {
     width: 100px;
     height: 100px;
+}
+
+.imageDetails {
+    text-align: right;
+    font-weight: bold;
+}
+
+#imageDetailsTable {
+    width: 100%;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+#imageDetailsImage > a > img {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.modal-dialog {
+    width: 750px;
 }
