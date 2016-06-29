@@ -38,9 +38,9 @@ public class UserService implements IUserService
         try
         {
             ResponseEntity<Image> response = restTemplate
-                    .exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+                    .exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<>(headers), Image.class);
 
-            System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
+            System.out.println(String.format("Your image is here: %s and favourite status is: %s", response.getBody().getImageData().getLink(), String.valueOf(response.getBody().getImageData().isFavorite())));
         }
         catch (HttpClientErrorException e)
         {

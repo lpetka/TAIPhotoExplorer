@@ -27,11 +27,18 @@ public class ApiCallsTests {
         userService.deleteImageById(imageData.getId());
         userService.getUserImages(0);
         userService.getImagesByTag("cat", 2);
-        userService.getImageByID("vYRQxQa");
-        userService.voteForImage("vYRQxQa", "up");
-        userService.voteForImage("vYRQxQa", "down");
-        userService.favouriteOrUnfavouriteImageById("vYRQxQa");
-        userService.favouriteOrUnfavouriteImageById("vYRQxQa");
-        userService.getPopularImagesByPage(3);
+
+        String testedImageId = "vYRQxQa";
+
+        userService.getImageByID(testedImageId);
+        userService.voteForImage(testedImageId, "up");
+        userService.voteForImage(testedImageId, "down");
+
+        userService.favouriteOrUnfavouriteImageById(testedImageId);
+        userService.getImageByID(testedImageId);
+        userService.favouriteOrUnfavouriteImageById(testedImageId);
+        userService.getImageByID(testedImageId);
+
+        userService.getUserImages(3);
     }
 }
