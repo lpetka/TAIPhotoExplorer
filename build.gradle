@@ -29,7 +29,7 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.webjars:bootstrap:3.3.4')
+	compile('org.webjars:bootstrap:3.3.6')
 	compile('org.webjars:jquery:2.1.4')
 	compile('com.fasterxml.jackson.core:jackson-core:2.6.3')
 	compile('com.fasterxml.jackson.core:jackson-databind:2.6.3')
