@@ -108,7 +108,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getUserFavourites()
+    public ImagesList getUserFavourites()
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting %s favorite images...\n", userName));
@@ -122,12 +122,15 @@ public class UserService implements IUserService
         {
             ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
             System.out.println(String.format("Your favourite images collection has %d elemtents", response.getBody().getImages().size()));
+            return response.getBody();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting favorite images of %s", userName));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override

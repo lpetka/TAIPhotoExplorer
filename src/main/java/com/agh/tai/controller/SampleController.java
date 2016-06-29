@@ -78,6 +78,13 @@ public class SampleController {
         return new StringResponse(userService.favouriteOrUnfavouriteImageById(imageId));
     }
 
+    @RequestMapping(value="/user/favourites", method = RequestMethod.GET)
+    public @ResponseBody ImagesList getUserFavourites(@RequestHeader(value = "access_token") String accessToken,
+                                                      @RequestHeader(value = "account_username") String accountUsername) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getUserFavourites();
+    }
+
     @RequestMapping("/index")
     String index(Model model, HttpSession session) {
         model.addAttribute("message", "Logged in as " + session.getAttribute("account_username"));

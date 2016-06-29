@@ -11,7 +11,7 @@ public interface IUserService
 
     String deleteImageById(String imageId);
 
-    void getUserFavourites();
+    ImagesList getUserFavourites();
 
     ImagesList getUserImages(int page);
 
