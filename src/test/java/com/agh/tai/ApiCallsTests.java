@@ -30,5 +30,7 @@ public class ApiCallsTests {
         userService.getImageByID("vYRQxQa");
         userService.voteForImage("vYRQxQa", "up");
         userService.voteForImage("vYRQxQa", "down");
+        userService.favouriteOrUnfavouriteImageById("vYRQxQa");
+        userService.favouriteOrUnfavouriteImageById("vYRQxQa");
     }
 }

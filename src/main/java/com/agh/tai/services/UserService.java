@@ -200,4 +200,29 @@ public class UserService implements IUserService
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void favouriteOrUnfavouriteImageById(String imageId)
+    {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Favouriting/Unfavouriting image with id #%s...\n", imageId));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<Basic> response = restTemplate
+                    .exchange(String.format("%s/image/%s/favorite", REST_SERVICE_URI, imageId), HttpMethod.POST, new HttpEntity<>(headers), Basic.class);
+
+            System.out.println(String.format("Image with id #%s has been %s", imageId, String.valueOf(response.getBody().getData())));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during favouriting/unfavouriting iamge with id #%s", imageId));
+            e.printStackTrace();
+        }
+    }
 }

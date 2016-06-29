@@ -18,4 +18,6 @@ public interface IUserService
     void getImagesByTag(String tagName, int page);
 
     void voteForImage(String imageId, String vote);
+
+    void favouriteOrUnfavouriteImageById(String imageId);
 }
