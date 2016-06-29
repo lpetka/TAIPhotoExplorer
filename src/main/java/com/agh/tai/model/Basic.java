@@ -4,18 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Basic {
-
+public class Basic
+{
     @JsonProperty("data")
-    private boolean data;
+    private String data;
 
     @JsonProperty("success")
-    private boolean success;
+    private String success;
 
     @JsonProperty("status")
-    private int status;
+    private String status;
 
-    public Basic(boolean data, boolean success, int status) {
+    public Basic(String data, String success, String status)
+    {
         this.data = data;
         this.success = success;
         this.status = status;
@@ -26,27 +27,33 @@ public class Basic {
 
     }
 
-    public boolean isData() {
+    public String getData()
+    {
         return data;
     }
 
-    public void setData(boolean data) {
+    public void setData(String data)
+    {
         this.data = data;
     }
 
-    public boolean isSuccess() {
+    public String getSuccess()
+    {
         return success;
     }
 
-    public void setSuccess(boolean success) {
+    public void setSuccess(String success)
+    {
         this.success = success;
     }
 
-    public int getStatus() {
+    public String getStatus()
+    {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status)
+    {
         this.status = status;
     }
 }
