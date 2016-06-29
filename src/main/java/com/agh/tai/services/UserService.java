@@ -84,7 +84,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void deleteImageById(String imageId)
+    public String deleteImageById(String imageId)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Deleting image with id %s...\n", imageId));
@@ -98,12 +98,14 @@ public class UserService implements IUserService
         {
             ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, imageId), HttpMethod.DELETE, new HttpEntity<Object>(headers), Basic.class);
             System.out.println(String.format("Is your image deleted? : %s", String.valueOf(response.getBody().isData())));
+            return String.valueOf(response.getBody().isData());
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during deletion of the image with id %s", imageId));
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override

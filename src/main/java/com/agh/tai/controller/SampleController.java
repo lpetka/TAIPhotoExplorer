@@ -39,11 +39,7 @@ public class SampleController {
                                                   @RequestHeader(value = "account_username") String accountUsername,
                                                   @RequestBody String pageNumber) {
         userService = new UserService(accountUsername, accessToken);
-        ImagesList imagesList = userService.getUserImages(Integer.valueOf(pageNumber));
-        if(imagesList != null) {
-            return imagesList;
-        }
-        return null;
+        return userService.getUserImages(Integer.valueOf(pageNumber));
     }
 
     @RequestMapping(value="/image/details", method = RequestMethod.POST, consumes = "application/json")
@@ -51,11 +47,15 @@ public class SampleController {
                                                   @RequestHeader(value = "account_username") String accountUsername,
                                                   @RequestBody String imageId) {
         userService = new UserService(accountUsername, accessToken);
-        ImageData imageData = userService.getImageByID(imageId);
-        if(imageData != null) {
-            return imageData;
-        }
-        return null;
+        return userService.getImageByID(imageId);
+    }
+
+    @RequestMapping(value = "/image/remove", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody String removeImageById(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody String imageId) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.deleteImageById(imageId);
     }
 
     @RequestMapping("/index")

@@ -9,7 +9,7 @@ public interface IUserService
 
     ImageData uploadImageByUrl(String filePath);
 
-    void deleteImageById(String imageId);
+    String deleteImageById(String imageId);
 
     void getUserFavourites();
 
