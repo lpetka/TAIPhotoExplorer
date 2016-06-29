@@ -13,6 +13,10 @@ $(document).ready(function () {
     $('#addImageButton').click(function () {
         $('#addModal').modal('toggle');
     });
+
+    $('#uploadImage').click(function () {
+        uploadImagefromUrl($('#imageUrl').val())
+    })
 });
 
 $(document).on('click','.imageContainer',function(e){
@@ -68,6 +72,31 @@ function removeUserImage(id) {
             removeImage(result)
         }
     });
+}
+
+function uploadImagefromUrl(url) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/upload",
+        data: url,
+        success: function (result) {
+            uploadImage(result)
+        }
+    });
+}
+
+function uploadImage(imageData) {
+    if(!!imageData) {
+        location.reload()
+    } else {
+        alert("Error occured during upload... Please try again later.")
+    }
 }
 
 function removeImage(imageId) {
