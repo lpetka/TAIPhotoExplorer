@@ -83,7 +83,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public boolean deleteImageById(String imageId)
+    public String deleteImageById(String imageId)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Deleting image with id %s...\n", imageId));
@@ -96,15 +96,15 @@ public class UserService implements IUserService
         try
         {
             ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, imageId), HttpMethod.DELETE, new HttpEntity<Object>(headers), Basic.class);
-            System.out.println(String.format("Is your image deleted? : %s", String.valueOf(response.getBody().isData())));
-            return response.getBody().isData();
+            System.out.println(String.format("Is your image deleted? : %s", String.valueOf(response.getBody().getData())));
+            return response.getBody().getData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during deletion of the image with id %s", imageId));
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -192,7 +192,7 @@ public class UserService implements IUserService
         try
         {
             ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/gallery/image/%s/vote/%s", REST_SERVICE_URI, imageId, vote), HttpMethod.POST, new HttpEntity<Object>(headers), Basic.class);
-            System.out.println(String.format("Is voting completed? : #%s", String.valueOf(response.getBody().isData())));
+            System.out.println(String.format("Is voting completed? : #%s", String.valueOf(response.getBody().getData())));
         }
         catch (HttpClientErrorException e)
         {
@@ -202,7 +202,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void favouriteOrUnfavouriteImageById(String imageId)
+    public String favouriteOrUnfavouriteImageById(String imageId)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Favouriting/Unfavouriting image with id #%s...\n", imageId));
@@ -216,13 +216,15 @@ public class UserService implements IUserService
         {
             ResponseEntity<Basic> response = restTemplate
                     .exchange(String.format("%s/image/%s/favorite", REST_SERVICE_URI, imageId), HttpMethod.POST, new HttpEntity<>(headers), Basic.class);
-
             System.out.println(String.format("Image with id #%s has been %s", imageId, String.valueOf(response.getBody().getData())));
+            return response.getBody().getData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during favouriting/unfavouriting iamge with id #%s", imageId));
             e.printStackTrace();
         }
+
+        return null;
     }
 }

@@ -9,7 +9,7 @@ public interface IUserService
 
     ImageData uploadImageByUrl(String filePath);
 
-    boolean deleteImageById(String imageId);
+    String deleteImageById(String imageId);
 
     void getUserFavourites();
 
@@ -19,5 +19,5 @@ public interface IUserService
 
     void voteForImage(String imageId, String vote);
 
-    void favouriteOrUnfavouriteImageById(String imageId);
+    String favouriteOrUnfavouriteImageById(String imageId);
 }

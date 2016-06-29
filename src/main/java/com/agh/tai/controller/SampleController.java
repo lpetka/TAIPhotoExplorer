@@ -56,7 +56,7 @@ public class SampleController {
                                    @RequestHeader(value = "account_username") String accountUsername,
                                    @RequestBody String imageId) {
         userService = new UserService(accountUsername, accessToken);
-        if(userService.deleteImageById(imageId))
+        if(userService.deleteImageById(imageId) != null)
             return new StringResponse(imageId);
         else
             return null;
@@ -68,6 +68,14 @@ public class SampleController {
                                                 @RequestBody String imageUrl) {
         userService = new UserService(accountUsername, accessToken);
         return userService.uploadImageByUrl(imageUrl);
+    }
+
+    @RequestMapping(value="/image/togglefavourite", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody StringResponse toggleFavourite(@RequestHeader(value = "access_token") String accessToken,
+                                                      @RequestHeader(value = "account_username") String accountUsername,
+                                                      @RequestBody String imageId) {
+        userService = new UserService(accountUsername, accessToken);
+        return new StringResponse(userService.favouriteOrUnfavouriteImageById(imageId));
     }
 
     @RequestMapping("/index")
