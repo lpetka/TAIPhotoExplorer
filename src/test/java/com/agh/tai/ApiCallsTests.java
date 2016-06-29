@@ -32,5 +32,6 @@ public class ApiCallsTests {
         userService.voteForImage("vYRQxQa", "down");
         userService.favouriteOrUnfavouriteImageById("vYRQxQa");
         userService.favouriteOrUnfavouriteImageById("vYRQxQa");
+        userService.getPopularImagesByPage(3);
     }
 }
