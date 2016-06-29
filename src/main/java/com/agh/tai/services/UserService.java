@@ -31,7 +31,7 @@ public class UserService implements IUserService
         System.out.println(String.format("Achieving image with id %s...\n", id));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", CLIENT_ID);
+        headers.add("Authorization", token);
 
         RestTemplate restTemplate = new RestTemplate();
 
