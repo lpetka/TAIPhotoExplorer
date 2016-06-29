@@ -1,5 +1,6 @@
 package com.agh.tai.controller;
 
+import com.agh.tai.model.ImageData;
 import com.agh.tai.model.ImagesList;
 import com.agh.tai.model.UserCredentials;
 import com.agh.tai.services.IUserService;
@@ -41,6 +42,18 @@ public class SampleController {
         ImagesList imagesList = userService.getUserImages(Integer.valueOf(pageNumber));
         if(imagesList != null) {
             return imagesList;
+        }
+        return null;
+    }
+
+    @RequestMapping(value="/image/details", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageData getImageById(@RequestHeader(value = "access_token") String accessToken,
+                                                  @RequestHeader(value = "account_username") String accountUsername,
+                                                  @RequestBody String imageId) {
+        userService = new UserService(accountUsername, accessToken);
+        ImageData imageData = userService.getImageByID(imageId);
+        if(imageData != null) {
+            return imageData;
         }
         return null;
     }

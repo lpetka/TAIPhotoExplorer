@@ -25,7 +25,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getImageByID(String id)
+    public ImageData getImageByID(String id)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Achieving image with id %s...\n", id));
@@ -39,12 +39,15 @@ public class UserService implements IUserService
         {
             ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
+            return response.getBody().getImageData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during geting image with id %s", id));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
@@ -127,7 +130,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getUserImages(int page)
+    public ImagesList getUserImages(int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting %s images...\n", userName));
@@ -136,17 +139,19 @@ public class UserService implements IUserService
         headers.add("Authorization", token);
 
         RestTemplate restTemplate = new RestTemplate();
-
         try
         {
             ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/images/%d", REST_SERVICE_URI, userName, page), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
             System.out.println(String.format("Your images collection has %d elemtents", response.getBody().getImages().size()));
+            return response.getBody();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting images of %s", userName));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
