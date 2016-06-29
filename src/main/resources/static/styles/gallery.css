@@ -1,0 +1,7 @@
+.imageContainer {
+    display: inline;
+}
+#imagesList > div > img {
+    width: 100px;
+    height: 100px;
+}
