@@ -2,6 +2,7 @@ package com.agh.tai.controller;
 
 import com.agh.tai.model.ImageData;
 import com.agh.tai.model.ImagesList;
+import com.agh.tai.model.StringResponse;
 import com.agh.tai.model.UserCredentials;
 import com.agh.tai.services.IUserService;
 import com.agh.tai.services.UserService;
@@ -51,11 +52,14 @@ public class SampleController {
     }
 
     @RequestMapping(value = "/image/remove", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody String removeImageById(@RequestHeader(value = "access_token") String accessToken,
-                                                @RequestHeader(value = "account_username") String accountUsername,
-                                                @RequestBody String imageId) {
+    public @ResponseBody StringResponse removeImageById(@RequestHeader(value = "access_token") String accessToken,
+                                   @RequestHeader(value = "account_username") String accountUsername,
+                                   @RequestBody String imageId) {
         userService = new UserService(accountUsername, accessToken);
-        return userService.deleteImageById(imageId);
+        if(userService.deleteImageById(imageId))
+            return new StringResponse(imageId);
+        else
+            return null;
     }
 
     @RequestMapping("/index")
