@@ -70,7 +70,14 @@
             <h1>MY PHOTOS</h1>
             <input type="hidden" id="pageNumber" value="0"/>
             <div id="imagesList">
-                <a href="#" id="loadMoreButton" class="btn btn-default" role="button">Load more</a>
+                <div id="buttonPanel" role="group" class="btn-group-vertical">
+                    <a href="#" id="loadMoreButton" class="btn btn-default btn-sm" role="button">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>More
+                    </a>
+                    <a href="#" id="addImageButton" class="btn btn-default btn-sm" role="button">
+                        <span class="glyphicon glyphicon-upload"></span>Add
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -78,6 +85,27 @@
 
 </div>
 <!-- /.container -->
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Image upload</h4>
+            </div>
+            <div class="modal-body">
+                Upload Image
+            </div>
+            <div class="modal-footer">
+                <button id="uploadImage" type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-ok"></span> Add Image
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

@@ -28,3 +28,11 @@
 .modal-dialog {
     width: 750px;
 }
+
+#buttonPanel > a {
+    width: 80px;
+}
+#buttonPanel {
+    width: 100px;
+    padding: 10px;
+}

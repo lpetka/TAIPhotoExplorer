@@ -10,6 +10,9 @@ $(document).ready(function () {
         removeUserImage($('#imageId').text());
     });
 
+    $('#addImageButton').click(function () {
+        $('#addModal').modal('toggle');
+    });
 });
 
 $(document).on('click','.imageContainer',function(e){
@@ -82,7 +85,7 @@ function appendImages(data, pageNumber) {
         $('#pageNumber').val(pageNumber);
     $.each(data, function (index, item) {
         var itemToAdd = '<div class="imageContainer"><input type="hidden" id="id" value="'+item.id+'"/><img class="img-thumbnail" src="'+item.link+'" /></div>';
-        $(itemToAdd).insertBefore('#loadMoreButton')
+        $(itemToAdd).insertBefore('#buttonPanel');
     })
 }
 
