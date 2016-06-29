@@ -19,4 +19,6 @@ public interface IUserService
     void voteForImage(String imageId, String vote);
 
     void favouriteOrUnfavouriteImageById(String imageId);
+
+    void getPopularImagesByPage(int page);
 }

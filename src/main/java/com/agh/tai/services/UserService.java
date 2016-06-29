@@ -230,4 +230,29 @@ public class UserService implements IUserService
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void getPopularImagesByPage(int page)
+    {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Getting popular images from page %d...\n", page));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<ImagesList> response = restTemplate
+                    .exchange(String.format("%s/gallery/hot/viral/%d.json", REST_SERVICE_URI, page), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
+
+            System.out.println(String.format("%d popular images from page %d has been loaded", response.getBody().getImages().size(), page));
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during getting popular images from page %d", page));
+            e.printStackTrace();
+        }
+    }
 }
