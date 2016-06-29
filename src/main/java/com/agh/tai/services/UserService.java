@@ -67,12 +67,11 @@ public class UserService implements IUserService
         HttpEntity<MultiValueMap<String,String>> entity =
                 new HttpEntity<MultiValueMap<String, String>>(parameters, headers);
 
-        ResponseEntity<Image> response = null;
-
         try
         {
-            response = restTemplate.exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
+            return response.getBody().getImageData();
         }
         catch (HttpClientErrorException e)
         {
@@ -80,7 +79,7 @@ public class UserService implements IUserService
             e.printStackTrace();
         }
 
-        return response.getBody().getImageData();
+        return null;
     }
 
     @Override

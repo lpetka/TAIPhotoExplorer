@@ -62,6 +62,14 @@ public class SampleController {
             return null;
     }
 
+    @RequestMapping(value="/image/upload", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageData uploadImageFromUrl(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody String imageUrl) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.uploadImageByUrl(imageUrl);
+    }
+
     @RequestMapping("/index")
     String index(Model model, HttpSession session) {
         model.addAttribute("message", "Logged in as " + session.getAttribute("account_username"));
