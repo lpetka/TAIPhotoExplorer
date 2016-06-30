@@ -1,9 +1,14 @@
 $(document).ready(function () {
     parseUrl();
-    getImagesFromPage(0);
+    getImagesFromPage(0, 0, 0);
 
     $('#loadMoreButton').click(function () {
-        getImagesFromPage(parseInt($('#pageNumber').val()) + 1);
+        var pageDetails = $('#pageNumber').val().split('/');
+        getImagesFromPage(
+            parseInt(pageDetails[0]),
+            parseInt(pageDetails[1]),
+            parseInt(pageDetails[2])
+        );
     });
 
 });
@@ -32,7 +37,11 @@ function parseUrl() {
     }
 }
 
-function getImagesFromPage(pageNumber) {
+function getImagesFromPage(pageNumber, photosQuantity, maxPhotos) {
+    if(photosQuantity >= maxPhotos) {
+        pageNumber = pageNumber + 1;
+        photosQuantity = 0;
+    }
     $.ajax({
         type: "POST",
         headers: {
@@ -44,16 +53,20 @@ function getImagesFromPage(pageNumber) {
         url: "/public/gallery",
         data: JSON.stringify(pageNumber),
         success: function (result) {
-            appendImages(result.data, pageNumber)
+            appendImages(result.data, pageNumber, photosQuantity, result.data.length)
         }
     });
 }
 
-function appendImages(data, pageNumber) {
-    if(data.length != 0)
-        $('#pageNumber').val(pageNumber);
+function appendImages(data, pageNumber, photosQuantity, maxPhotos) {
+    if(data.length != 0) {
+        photosQuantity = photosQuantity+20;
+        $('#pageNumber').val(pageNumber+'/'+photosQuantity+'/'+maxPhotos);
+    }
     $.each(data, function (index, item) {
-        var itemToAdd = '<div class="imageContainer"><input type="hidden" id="id" value="'+item.id+'"/><img class="img-thumbnail" src="'+item.link+'" /></div>';
-        $(itemToAdd).insertBefore('#buttonPanel');
+        if(item.type != null && index >= photosQuantity - 20 && index < photosQuantity) {
+            var itemToAdd = '<div class="imageContainer"><input type="hidden" id="id" value="' + item.id + '"/><img class="img-thumbnail" src="' + item.link + '" /></div>';
+            $(itemToAdd).insertBefore('#buttonPanel');
+        }
     })
 }
