@@ -83,13 +83,23 @@ public class ImageData {
     @JsonProperty("inGallery")
     private boolean inGallery;
 
+    @JsonProperty("ups")
+    private int ups;
+
+    @JsonProperty("downs")
+    private int downs;
+
+    @JsonProperty("points")
+    private int points;
+
 
     public ImageData()
     {
 
     }
 
-    public ImageData(String id, String title, String description, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
+    public ImageData(String id, String title, String description, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery, int ups, int downs, int points)
+    {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -115,6 +125,9 @@ public class ImageData {
         this.nsfw = nsfw;
         this.vote = vote;
         this.inGallery = inGallery;
+        this.points = points;
+        this.downs = downs;
+        this.ups = ups;
     }
 
     public String getId() {
@@ -315,5 +328,29 @@ public class ImageData {
 
     public void setInGallery(boolean inGallery) {
         this.inGallery = inGallery;
+    }
+
+    public int getUps() {
+        return ups;
+    }
+
+    public void setUps(int ups) {
+        this.ups = ups;
+    }
+
+    public int getDowns() {
+        return downs;
+    }
+
+    public void setDowns(int downs) {
+        this.downs = downs;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
     }
 }

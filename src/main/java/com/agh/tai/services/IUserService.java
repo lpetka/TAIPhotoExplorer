@@ -1,7 +1,10 @@
 package com.agh.tai.services;
 
+import com.agh.tai.model.GalleryItem;
 import com.agh.tai.model.ImageData;
 import com.agh.tai.model.ImagesList;
+
+import java.util.List;
 
 public interface IUserService
 {
@@ -11,16 +14,15 @@ public interface IUserService
 
     String deleteImageById(String imageId);
 
-    void getUserFavourites();
+    ImagesList getUserFavourites();
 
     ImagesList getUserImages(int page);
 
-    void getImagesByTag(String tagName, int page);
+    List<GalleryItem> getImagesByTag(String tagName, int page);
 
-    void voteForImage(String imageId, String vote);
+    String voteForImage(String imageId, String vote);
 
     String favouriteOrUnfavouriteImageById(String imageId);
-    void favouriteOrUnfavouriteImageById(String imageId);
 
-    void getPopularImagesByPage(int page);
+    ImagesList getPopularImagesByPage(int page);
 }

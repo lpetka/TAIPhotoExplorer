@@ -10,6 +10,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 public class UserService implements IUserService
 {
     private static final String REST_SERVICE_URI = "https://api.imgur.com/3";
@@ -31,13 +33,15 @@ public class UserService implements IUserService
         System.out.println(String.format("Achieving image with id %s...\n", id));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", CLIENT_ID);
+        headers.add("Authorization", token);
 
         RestTemplate restTemplate = new RestTemplate();
 
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            ResponseEntity<Image> response = restTemplate
+                    .exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
             return response.getBody().getImageData();
         }
@@ -69,7 +73,9 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
+            ResponseEntity<Image> response = restTemplate
+                    .exchange(String.format("%s/image", REST_SERVICE_URI), HttpMethod.POST, entity, Image.class);
+
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
             return response.getBody().getImageData();
         }
@@ -95,7 +101,9 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, imageId), HttpMethod.DELETE, new HttpEntity<Object>(headers), Basic.class);
+            ResponseEntity<Basic> response = restTemplate
+                    .exchange(String.format("%s/image/%s", REST_SERVICE_URI, imageId), HttpMethod.DELETE, new HttpEntity<Object>(headers), Basic.class);
+
             System.out.println(String.format("Is your image deleted? : %s", String.valueOf(response.getBody().getData())));
             return response.getBody().getData();
         }
@@ -108,7 +116,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getUserFavourites()
+    public ImagesList getUserFavourites()
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting %s favorite images...\n", userName));
@@ -120,14 +128,18 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
+            ResponseEntity<ImagesList> response = restTemplate
+                    .exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
+
             System.out.println(String.format("Your favourite images collection has %d elemtents", response.getBody().getImages().size()));
+            return response.getBody();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting favorite images of %s", userName));
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
@@ -142,7 +154,9 @@ public class UserService implements IUserService
         RestTemplate restTemplate = new RestTemplate();
         try
         {
-            ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/images/%d", REST_SERVICE_URI, userName, page), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
+            ResponseEntity<ImagesList> response = restTemplate
+                    .exchange(String.format("%s/account/%s/images/%d", REST_SERVICE_URI, userName, page), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
+
             System.out.println(String.format("Your images collection has %d elemtents", response.getBody().getImages().size()));
             return response.getBody();
         }
@@ -156,7 +170,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getImagesByTag(String tagName, int page)
+    public List<GalleryItem> getImagesByTag(String tagName, int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting #%s images from page %d...\n", tagName, page));
@@ -168,18 +182,23 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Tag> response = restTemplate.exchange(String.format("%s/gallery/t/%s/viral/%d", REST_SERVICE_URI, tagName, page), HttpMethod.GET, new HttpEntity<Object>(headers), Tag.class);
+            ResponseEntity<Tag> response = restTemplate
+                    .exchange(String.format("%s/gallery/t/%s/viral/%d", REST_SERVICE_URI, tagName, page), HttpMethod.GET, new HttpEntity<>(headers), Tag.class);
+
             System.out.println(String.format("There are %d images under tag #%s", response.getBody().getTagData().getItems().size(), tagName));
+            return response.getBody().getTagData().getItems();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting #%s images", tagName));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
-    public void voteForImage(String imageId, String vote)
+    public String voteForImage(String imageId, String vote)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Voting fot the image with id #%s...\n", imageId));
@@ -191,14 +210,19 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Basic> response = restTemplate.exchange(String.format("%s/gallery/image/%s/vote/%s", REST_SERVICE_URI, imageId, vote), HttpMethod.POST, new HttpEntity<Object>(headers), Basic.class);
+            ResponseEntity<Basic> response = restTemplate
+                    .exchange(String.format("%s/gallery/image/%s/vote/%s", REST_SERVICE_URI, imageId, vote), HttpMethod.POST, new HttpEntity<Object>(headers), Basic.class);
+
             System.out.println(String.format("Is voting completed? : #%s", String.valueOf(response.getBody().getData())));
+            return response.getBody().getData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during voting for iamge with id #%s images", imageId));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
@@ -216,6 +240,7 @@ public class UserService implements IUserService
         {
             ResponseEntity<Basic> response = restTemplate
                     .exchange(String.format("%s/image/%s/favorite", REST_SERVICE_URI, imageId), HttpMethod.POST, new HttpEntity<>(headers), Basic.class);
+
             System.out.println(String.format("Image with id #%s has been %s", imageId, String.valueOf(response.getBody().getData())));
             return response.getBody().getData();
         }
@@ -224,12 +249,11 @@ public class UserService implements IUserService
             System.out.println(String.format("Error occurred during favouriting/unfavouriting iamge with id #%s", imageId));
             e.printStackTrace();
         }
-
         return null;
     }
 
     @Override
-    public void getPopularImagesByPage(int page)
+    public ImagesList getPopularImagesByPage(int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting popular images from page %d...\n", page));
@@ -245,11 +269,14 @@ public class UserService implements IUserService
                     .exchange(String.format("%s/gallery/hot/viral/%d.json", REST_SERVICE_URI, page), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
 
             System.out.println(String.format("%d popular images from page %d has been loaded", response.getBody().getImages().size(), page));
+            return response.getBody();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting popular images from page %d", page));
             e.printStackTrace();
         }
+
+        return null;
     }
 }
