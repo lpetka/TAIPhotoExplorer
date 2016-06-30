@@ -14,8 +14,17 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
-task stage {
-	dependsOn build
+task stage(type: Copy, dependsOn: [clean, build]) {
+	from jar.archivePath
+	into project.rootDir
+	rename {
+		'app.jar'
+	}
+}
+stage.mustRunAfter(clean)
+
+clean << {
+	project.file('app.jar').delete()
 }
 
 jar {
@@ -33,8 +42,12 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.webjars:bootstrap:3.3.4')
+	compile('org.webjars:bootstrap:3.3.6')
 	compile('org.webjars:jquery:2.1.4')
+	compile('org.webjars:bootstrap-tagsinput:0.6.1')
+	compile('com.fasterxml.jackson.core:jackson-core:2.6.3')
+	compile('com.fasterxml.jackson.core:jackson-databind:2.6.3')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 
