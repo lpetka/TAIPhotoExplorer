@@ -257,4 +257,29 @@ public class UserService implements IUserService
 
         return null;
     }
+
+    @Override
+    public ImageData getImageFromGalleryByID(String id) {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Achieving image with id %s...\n", id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
+            return response.getBody().getImageData();
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during geting image with id %s", id));
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

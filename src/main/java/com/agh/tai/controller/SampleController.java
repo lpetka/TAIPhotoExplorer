@@ -99,6 +99,14 @@ public class SampleController {
         return imageVote;
     }
 
+    @RequestMapping(value="/image/gallerydetails", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageData voteForImage(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody String imageId) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getImageFromGalleryByID(imageId);
+    }
+
     @RequestMapping("/index")
     String index(Model model, HttpSession session) {
         model.addAttribute("message", "Logged in as " + session.getAttribute("account_username"));

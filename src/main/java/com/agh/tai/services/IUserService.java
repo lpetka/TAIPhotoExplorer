@@ -7,6 +7,8 @@ public interface IUserService
 {
     ImageData getImageByID(String id);
 
+    ImageData getImageFromGalleryByID(String id);
+
     ImageData uploadImageByUrl(String filePath);
 
     String deleteImageById(String imageId);
