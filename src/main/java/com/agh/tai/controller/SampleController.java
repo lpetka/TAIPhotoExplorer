@@ -1,9 +1,6 @@
 package com.agh.tai.controller;
 
-import com.agh.tai.model.ImageData;
-import com.agh.tai.model.ImagesList;
-import com.agh.tai.model.StringResponse;
-import com.agh.tai.model.UserCredentials;
+import com.agh.tai.model.*;
 import com.agh.tai.services.IUserService;
 import com.agh.tai.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -12,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Controller
 public class SampleController {
@@ -76,6 +75,48 @@ public class SampleController {
                                                       @RequestBody String imageId) {
         userService = new UserService(accountUsername, accessToken);
         return new StringResponse(userService.favouriteOrUnfavouriteImageById(imageId));
+    }
+
+    @RequestMapping(value="/user/favourites", method = RequestMethod.GET)
+    public @ResponseBody ImagesList getUserFavourites(@RequestHeader(value = "access_token") String accessToken,
+                                                      @RequestHeader(value = "account_username") String accountUsername) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getUserFavourites();
+    }
+
+    @RequestMapping(value="/public/gallery", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImagesList getImagesFromPublicGallery(@RequestHeader(value = "access_token") String accessToken,
+                                                      @RequestHeader(value = "account_username") String accountUsername,
+                                                               @RequestBody String pageNumber) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getPopularImagesByPage(Integer.valueOf(pageNumber));
+    }
+
+    @RequestMapping(value="/image/vote", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageVote voteForImage(@RequestHeader(value = "access_token") String accessToken,
+                                         @RequestHeader(value = "account_username") String accountUsername,
+                                         @RequestBody ImageVote imageVote) {
+        userService = new UserService(accountUsername, accessToken);
+        userService.voteForImage(imageVote.getId(), imageVote.getVote());
+        return imageVote;
+    }
+
+    @RequestMapping(value="/image/gallerydetails", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageData voteForImage(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody String imageId) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getImageFromGalleryByID(imageId);
+    }
+
+    @RequestMapping(value="/image/fromtags", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody GalleryItemList getImagesByTags(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody TagsList tagsList) {
+        userService = new UserService(accountUsername, accessToken);
+        GalleryItemList galleryItemList = new GalleryItemList(new ArrayList<>());
+        tagsList.getTagsList().stream().forEach(s -> galleryItemList.getData().addAll(userService.getImagesByTag(s, tagsList.getPage()).getItems()));
+        return galleryItemList;
     }
 
     @RequestMapping("/index")

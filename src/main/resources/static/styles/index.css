@@ -1,3 +1,47 @@
-footer {
-    margin: 50px 0;
+.imageContainer {
+    display: inline;
+    cursor: pointer;
+}
+
+#imagesList > div > img {
+    width: 100px;
+    height: 100px;
+}
+
+.imageDetails {
+    text-align: right;
+    font-weight: bold;
+}
+
+.imageDetails + td {
+    max-width: 200px;
+}
+
+#imageDetailsTable {
+    width: 100%;
+    border-spacing: 10px;
+    border-collapse: separate;
+}
+
+#imageDetailsImage > a > img {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.modal-dialog {
+    width: 850px;
+}
+
+#buttonPanel > a {
+    width: 80px;
+}
+
+#buttonPanel {
+    width: 100px;
+    padding: 10px;
+}
+
+#popoverContent {
+    display: none;
 }

@@ -3,12 +3,15 @@ package com.agh.tai.services;
 import com.agh.tai.model.GalleryItem;
 import com.agh.tai.model.ImageData;
 import com.agh.tai.model.ImagesList;
+import com.agh.tai.model.TagData;
 
 import java.util.List;
 
 public interface IUserService
 {
     ImageData getImageByID(String id);
+
+    ImageData getImageFromGalleryByID(String id);
 
     ImageData uploadImageByUrl(String filePath);
 
@@ -18,11 +21,12 @@ public interface IUserService
 
     ImagesList getUserImages(int page);
 
-    List<GalleryItem> getImagesByTag(String tagName, int page);
+    TagData getImagesByTag(String tagName, int page);
 
-    String voteForImage(String imageId, String vote);
+    void voteForImage(String imageId, String vote);
+
+    ImagesList getPopularImagesByPage(int page);
 
     String favouriteOrUnfavouriteImageById(String imageId);
 
-    ImagesList getPopularImagesByPage(int page);
 }

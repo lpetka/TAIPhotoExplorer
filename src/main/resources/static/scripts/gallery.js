@@ -1,7 +1,6 @@
 $(document).ready(function () {
     getImagesFromPage(0);
 
-
     $('#loadMoreButton').click(function () {
         getImagesFromPage(parseInt($('#pageNumber').val()) + 1);
     });
@@ -107,24 +106,9 @@ function toggleFavourites(id) {
         url: "/image/togglefavourite",
         data: id,
         success: function (result) {
-            toggleFavourite(result.response);
+            setFavouritesButton(result.response);
         }
     });
-}
-
-function toggleFavourite(state) {
-    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
-    if(state == "favorited") {
-        $('#buttonFavouritesText').text('Remove from favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
-    } else if(state == "unfavorited") {
-        $('#buttonFavouritesText').text('Add to favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
-    } else {
-
-    }
 }
 
 function uploadImage(imageData) {
@@ -139,7 +123,8 @@ function removeImage(imageId) {
     if(imageId != null) {
         $(':input').filter(function () {
             return this.value == imageId.response;
-        }).parent().remove()
+        }).parent().remove();
+        $('#imageModal').modal('toggle');
     } else {
         alert("Error occured during removing image...\nPlease try again later.")
     }
@@ -160,6 +145,19 @@ function parseDetail(detail) {
     return detail;
 }
 
+function setFavouritesButton(state) {
+    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
+    if(state == 'favorited') {
+        $('#buttonFavouritesText').text('Remove from favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-star-empty');
+    } else {
+        $('#buttonFavouritesText').text('Add to favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-star');
+    }
+}
+
 function displayImageDetails(imageDetails) {
     var table = $('#imageDetailsTable');
     table.find('#imageId').text(parseDetail(imageDetails.id));
@@ -171,20 +169,18 @@ function displayImageDetails(imageDetails) {
     table.find('#imageWidth').text(parseDetail(imageDetails.width));
     table.find('#imageLink').text(parseDetail(imageDetails.link));
     table.find('#imageHeight').text(parseDetail(imageDetails.height));
-    table.find('#imageVote').text(parseDetail(imageDetails.vote));
     table.find('#imageSize').text(parseDetail(imageDetails.size));
-    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
-    if(imageDetails.favourite == true) {
-        $('#buttonFavouritesText').text('Remove from favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
+    table.find('#imageType').text(parseDetail(imageDetails.type));
+
+    if(imageDetails.favorite == true) {
+        setFavouritesButton('favorited');
     } else {
-        $('#buttonFavouritesText').text('Add to favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
+        setFavouritesButton('unfavorited')
     }
+
     table.find('#imageDetailsImage').empty();
     var imageToAdd = '<a href="'+imageDetails.link+'"><img class ="img-thumbnail" src="'+imageDetails.link+'"/></a>';
     table.find('#imageDetailsImage').append(imageToAdd);
+
     $('#imageModal').modal('toggle');
 }

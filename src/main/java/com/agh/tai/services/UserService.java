@@ -39,9 +39,7 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Image> response = restTemplate
-                    .exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
-
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
             return response.getBody().getImageData();
         }
@@ -170,7 +168,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public List<GalleryItem> getImagesByTag(String tagName, int page)
+    public TagData getImagesByTag(String tagName, int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting #%s images from page %d...\n", tagName, page));
@@ -186,7 +184,8 @@ public class UserService implements IUserService
                     .exchange(String.format("%s/gallery/t/%s/viral/%d", REST_SERVICE_URI, tagName, page), HttpMethod.GET, new HttpEntity<>(headers), Tag.class);
 
             System.out.println(String.format("There are %d images under tag #%s", response.getBody().getTagData().getItems().size(), tagName));
-            return response.getBody().getTagData().getItems();
+
+            return response.getBody().getTagData();
         }
         catch (HttpClientErrorException e)
         {
@@ -198,7 +197,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public String voteForImage(String imageId, String vote)
+    public void voteForImage(String imageId, String vote)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Voting fot the image with id #%s...\n", imageId));
@@ -249,6 +248,7 @@ public class UserService implements IUserService
             System.out.println(String.format("Error occurred during favouriting/unfavouriting iamge with id #%s", imageId));
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -267,13 +267,37 @@ public class UserService implements IUserService
         {
             ResponseEntity<ImagesList> response = restTemplate
                     .exchange(String.format("%s/gallery/hot/viral/%d.json", REST_SERVICE_URI, page), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
-
             System.out.println(String.format("%d popular images from page %d has been loaded", response.getBody().getImages().size(), page));
             return response.getBody();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting popular images from page %d", page));
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public ImageData getImageFromGalleryByID(String id) {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Achieving image with id %s...\n", id));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
+            return response.getBody().getImageData();
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during geting image with id %s", id));
             e.printStackTrace();
         }
 
