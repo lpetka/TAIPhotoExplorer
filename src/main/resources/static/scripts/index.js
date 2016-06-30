@@ -1,6 +1,9 @@
+var tagsEmpty = false;
+
 $(document).ready(function () {
     parseUrl();
-    getImagesFromPage(0, 0, 0);
+    checkTags();
+    loadImages(0, 0, 0);
 
     $('#imageVoteButton').click(function () {
         $('.imgVote').removeClass('active');
@@ -19,8 +22,9 @@ $(document).ready(function () {
     });
 
     $('#loadMoreButton').click(function () {
+        checkTags();
         var pageDetails = $('#pageNumber').val().split('/');
-        getImagesFromPage(
+        loadImages(
             parseInt(pageDetails[0]),
             parseInt(pageDetails[1]),
             parseInt(pageDetails[2])
@@ -29,6 +33,12 @@ $(document).ready(function () {
 
     $('#toggleFavourite').click(function () {
         toggleFavourites($('#imageId').text());
+    });
+
+    $('#findByTagsButton').click(function () {
+        checkTags();
+        $('#imagesList').find('.imageContainer').remove();
+        loadImages(0, 0, 0);
     });
 
 });
@@ -72,11 +82,7 @@ function parseUrl() {
     }
 }
 
-function getImagesFromPage(pageNumber, photosQuantity, maxPhotos) {
-    if(photosQuantity >= maxPhotos) {
-        pageNumber = pageNumber + 1;
-        photosQuantity = 0;
-    }
+function getImagesFromPage(pageNumber, photosQuantity) {
     $.ajax({
         type: "POST",
         headers: {
@@ -87,6 +93,23 @@ function getImagesFromPage(pageNumber, photosQuantity, maxPhotos) {
         dataType: 'json',
         url: "/public/gallery",
         data: JSON.stringify(pageNumber),
+        success: function (result) {
+            appendImages(result.data, pageNumber, photosQuantity, result.data.length)
+        }
+    });
+}
+
+function getImagesByTags(pageNumber, photosQuantity) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/fromtags",
+        data: JSON.stringify({tags_list : $('#tags').tagsinput('items'), page : pageNumber}),
         success: function (result) {
             appendImages(result.data, pageNumber, photosQuantity, result.data.length)
         }
@@ -144,6 +167,18 @@ function imageVote(nextState, currentState, buttonClicked) {
             setButtons(result.vote, currentState, buttonClicked);
         }
     });
+}
+
+function checkTags() {
+    tagsEmpty = ($('#tags').tagsinput('items').length == 0)
+}
+
+function loadImages(pageNumber, photosQuantity, maxPhotos) {
+    if(photosQuantity >= maxPhotos) {
+        pageNumber = pageNumber + 1;
+        photosQuantity = 0;
+    }
+    tagsEmpty ? getImagesFromPage(pageNumber, photosQuantity, maxPhotos) : getImagesByTags(pageNumber, photosQuantity, maxPhotos);
 }
 
 function setButtons(nextState, currentState, buttonClicked) {
@@ -208,7 +243,7 @@ function displayImageDetails(imageDetails) {
     table.find('#imageTitle').text(parseDetail(imageDetails.title));
     table.find('#imageUploader').text(parseDetail(imageDetails.account_url));
     table.find('#imageDescription').text(parseDetail(imageDetails.description));
-    table.find('#imageSection').text(parseDetail(imageDetails.section));
+    table.find('#imageTopic').text(parseDetail(imageDetails.topic));
     table.find('#imageWidth').text(parseDetail(imageDetails.width));
     table.find('#imageLink').text(parseDetail(imageDetails.link));
     table.find('#imageHeight').text(parseDetail(imageDetails.height));
