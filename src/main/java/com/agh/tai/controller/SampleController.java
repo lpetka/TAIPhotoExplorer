@@ -1,9 +1,6 @@
 package com.agh.tai.controller;
 
-import com.agh.tai.model.ImageData;
-import com.agh.tai.model.ImagesList;
-import com.agh.tai.model.StringResponse;
-import com.agh.tai.model.UserCredentials;
+import com.agh.tai.model.*;
 import com.agh.tai.services.IUserService;
 import com.agh.tai.services.UserService;
 import org.springframework.stereotype.Controller;
@@ -91,6 +88,15 @@ public class SampleController {
                                                                @RequestBody String pageNumber) {
         userService = new UserService(accountUsername, accessToken);
         return userService.getPopularImagesByPage(Integer.valueOf(pageNumber));
+    }
+
+    @RequestMapping(value="/image/vote", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImageVote voteForImage(@RequestHeader(value = "access_token") String accessToken,
+                                         @RequestHeader(value = "account_username") String accountUsername,
+                                         @RequestBody ImageVote imageVote) {
+        userService = new UserService(accountUsername, accessToken);
+        userService.voteForImage(imageVote.getId(), imageVote.getVote());
+        return imageVote;
     }
 
     @RequestMapping("/index")
