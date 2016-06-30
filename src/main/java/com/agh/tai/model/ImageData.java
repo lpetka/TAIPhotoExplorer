@@ -83,13 +83,37 @@ public class ImageData {
     @JsonProperty("inGallery")
     private boolean inGallery;
 
+    @JsonProperty("topic")
+    private String topic;
+
+    @JsonProperty("topic_id")
+    private String topicID;
+
+    @JsonProperty("account_url")
+    private String accountUrl;
+
+    @JsonProperty("account_id")
+    private int accountId;
+
+    @JsonProperty("ups")
+    private int ups;
+
+    @JsonProperty("downs")
+    private int downs;
+
+    @JsonProperty("points")
+    private int points;
+
+    @JsonProperty("score")
+    private int score;
+
 
     public ImageData()
     {
 
     }
 
-    public ImageData(String id, String title, String description, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery) {
+    public ImageData(String id, String title, String description, BigDecimal datetime, String type, boolean animated, int width, int height, BigDecimal size, BigDecimal views, BigDecimal bandwidth, String deletehash, String name, String section, String link, String gifv, String mp4, String webm, BigDecimal mp4Size, BigDecimal webmSize, boolean looping, boolean favorite, boolean nsfw, String vote, boolean inGallery, String topic, String topicID, String accountUrl, int accountId, int ups, int downs, int points, int score) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -115,6 +139,14 @@ public class ImageData {
         this.nsfw = nsfw;
         this.vote = vote;
         this.inGallery = inGallery;
+        this.topic = topic;
+        this.topicID = topicID;
+        this.accountUrl = accountUrl;
+        this.accountId = accountId;
+        this.ups = ups;
+        this.downs = downs;
+        this.points = points;
+        this.score = score;
     }
 
     public String getId() {
@@ -315,5 +347,69 @@ public class ImageData {
 
     public void setInGallery(boolean inGallery) {
         this.inGallery = inGallery;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getTopicID() {
+        return topicID;
+    }
+
+    public void setTopicID(String topicID) {
+        this.topicID = topicID;
+    }
+
+    public String getAccountUrl() {
+        return accountUrl;
+    }
+
+    public void setAccountUrl(String accountUrl) {
+        this.accountUrl = accountUrl;
+    }
+
+    public int getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
+    }
+
+    public int getUps() {
+        return ups;
+    }
+
+    public void setUps(int ups) {
+        this.ups = ups;
+    }
+
+    public int getDowns() {
+        return downs;
+    }
+
+    public void setDowns(int downs) {
+        this.downs = downs;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
