@@ -51,9 +51,7 @@
 
 <!-- Page Content -->
 <div class="container">
-
     <div class="row">
-
         <div class="col-md-3">
             <p class="lead">Menu</p>
             <div class="list-group">
@@ -64,13 +62,108 @@
         </div>
 
         <div class="col-md-9">
-            <h1>PHOTO GALLERY</h1>
+            <h2>Public gallery</h2>
+            <hr />
+            <input type="hidden" id="pageNumber" value="0"/>
+            <div id="imagesList">
+                <div id="buttonPanel" role="group" class="btn-group-vertical">
+                    <a href="#" id="loadMoreButton" class="btn btn-default btn-sm" role="button">
+                        <span class="glyphicon glyphicon-option-horizontal"></span>More
+                    </a>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
 <!-- /.container -->
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Image details</h4>
+            </div>
+            <div class="modal-body">
+                <table id="imageDetailsTable">
+                    <tr>
+                        <td id="imageDetailsImage" rowspan="7"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">ID:</td>
+                        <td id="imageId"></td>
+                        <td class="imageDetails">Views:</td>
+                        <td id="imageViews"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Title:</td>
+                        <td id="imageTitle"></td>
+                        <td class="imageDetails">Name:</td>
+                        <td id="imageName"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Description:</td>
+                        <td id="imageDescription"></td>
+                        <td class="imageDetails">Section:</td>
+                        <td id="imageSection"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Width:</td>
+                        <td id="imageWidth"></td>
+                        <td class="imageDetails">Link:</td>
+                        <td id="imageLink"></td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Height:</td>
+                        <td id="imageHeight"></td>
+                        <td class="imageDetails">Vote:</td>
+                        <td id="imageVote">
+                            <input type="hidden" id="voteState" />
+                            <a href="#" id="imageVoteButton" class="btn btn-default btn-sm" role="button"
+                               data-placement="bottom" data-toggle="popover" title="Vote for image!">
+                                <span id="buttonVoteIcon"></span>
+                                <span id="buttonVoteText">TEST</span>
+                            </a>
+                            <div id="popoverContent">
+                                <a href="#" role="button" class="imgVote btn btn-sm btn-default active">
+                                    <input class="state" type="hidden" value="up"/>
+                                    <span class="glyphicon glyphicon-thumbs-up"></span>Like
+                                </a>
+                                <a href="#" role="button" class="imgVote btn btn-sm btn-default">
+                                    <input class="state" type="hidden" value="down"/>
+                                    <span class="glyphicon glyphicon-thumbs-down"></span>Disike
+                                </a>
+                                <a href="#" role="button" class="imgVote btn btn-sm btn-default">
+                                    <input class="state" type="hidden" value=""/>
+                                    <span class="glyphicon glyphicon-asterisk"></span>Neutral
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="imageDetails">Size:</td>
+                        <td id="imageSize"></td>
+                        <td class="imageDetails">Favourite:</td>
+                        <td id="imageFavourite">
+                            <button id="toggleFavourite" type="button" class="btn btn-default btn-sm">
+                                <span id="buttonFavouritesIcon"></span>
+                                <span id="buttonFavouritesText"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="deleteImageButton" type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-trash"></span> Delete Image
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="container">
 
