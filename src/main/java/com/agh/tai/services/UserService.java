@@ -1,6 +1,7 @@
 package com.agh.tai.services;
 
 import com.agh.tai.model.*;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,6 +10,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
 
 public class UserService implements IUserService
 {
@@ -122,6 +125,10 @@ public class UserService implements IUserService
         {
             ResponseEntity<ImagesList> response = restTemplate.exchange(String.format("%s/account/%s/favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
             System.out.println(String.format("Your favourite images collection has %d elemtents", response.getBody().getImages().size()));
+            ResponseEntity<ImagesList> responseGallery = restTemplate.exchange(String.format("%s/account/%s/gallery_favorites", REST_SERVICE_URI, userName), HttpMethod.GET, new HttpEntity<Object>(headers), ImagesList.class);
+            System.out.println(String.format("Your favourite gallery images collection has %d elemtents", response.getBody().getImages().size()));
+            response.getBody().getImages().addAll(responseGallery.getBody().getImages());
+            Collections.shuffle(response.getBody().getImages());
             return response.getBody();
         }
         catch (HttpClientErrorException e)
