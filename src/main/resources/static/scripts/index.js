@@ -11,6 +11,10 @@ $(document).ready(function () {
         );
     });
 
+    $('#toggleFavourite').click(function () {
+        toggleFavourites($('#imageId').text());
+    });
+
 });
 
 $(document).on('click','.imageContainer',function(e){
@@ -75,6 +79,23 @@ function getImageDataById(id) {
         data: id,
         success: function (result) {
             displayImageDetails(result);
+        }
+    });
+}
+
+function toggleFavourites(id) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/togglefavourite",
+        data: id,
+        success: function (result) {
+            setFavouritesButton(result.response);
         }
     });
 }
