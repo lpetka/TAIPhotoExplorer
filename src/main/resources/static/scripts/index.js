@@ -6,7 +6,7 @@ $(document).ready(function () {
         $('.imgVote').removeClass('active');
         if($('#voteState').val() == 'up') {
             $('.imgVote:nth-of-type(1)').addClass('active');
-        } else {
+        } else if($('#voteState').val() == 'down') {
             $('.imgVote:nth-of-type(2)').addClass('active');
         }
     });
