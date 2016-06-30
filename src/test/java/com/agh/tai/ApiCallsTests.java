@@ -20,7 +20,7 @@ public class ApiCallsTests
     @Before
     public void setUp()
     {
-        this.userService = new UserService("mzieluFAKE", "7123c4d6a642d2dce424ac9566173098d4ce34ae");
+        this.userService = new UserService("mzieluFAKE", "16a802a20a2c608c09b918e2eba8312016ddc7cd");
     }
 
     @Test
@@ -62,7 +62,7 @@ public class ApiCallsTests
     @Test
     public void getTagImagesTest()
     {
-        List<GalleryItem> images = userService.getImagesByTag("cat", 0);
+        List<GalleryItem> images = userService.getImagesByTag("cat", 0).getItems();
 
         assertNotEquals(images.get(0), null);
     }

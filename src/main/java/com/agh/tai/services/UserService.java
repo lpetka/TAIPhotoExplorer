@@ -39,7 +39,7 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
             return response.getBody().getImageData();
         }
@@ -213,15 +213,12 @@ public class UserService implements IUserService
                     .exchange(String.format("%s/gallery/image/%s/vote/%s", REST_SERVICE_URI, imageId, vote), HttpMethod.POST, new HttpEntity<Object>(headers), Basic.class);
 
             System.out.println(String.format("Is voting completed? : #%s", String.valueOf(response.getBody().getData())));
-            return response.getBody().getData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during voting for iamge with id #%s images", imageId));
             e.printStackTrace();
         }
-
-        return null;
     }
 
     @Override
