@@ -2,6 +2,7 @@ package com.agh.tai.services;
 
 import com.agh.tai.model.ImageData;
 import com.agh.tai.model.ImagesList;
+import com.agh.tai.model.TagData;
 
 public interface IUserService
 {
@@ -17,7 +18,7 @@ public interface IUserService
 
     ImagesList getUserImages(int page);
 
-    void getImagesByTag(String tagName, int page);
+    TagData getImagesByTag(String tagName, int page);
 
     void voteForImage(String imageId, String vote);
 

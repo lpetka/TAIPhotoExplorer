@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Controller
 public class SampleController {
@@ -105,6 +107,16 @@ public class SampleController {
                                                 @RequestBody String imageId) {
         userService = new UserService(accountUsername, accessToken);
         return userService.getImageFromGalleryByID(imageId);
+    }
+
+    @RequestMapping(value="/image/fromtags", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody GalleryItemList getImagesByTags(@RequestHeader(value = "access_token") String accessToken,
+                                                @RequestHeader(value = "account_username") String accountUsername,
+                                                @RequestBody TagsList tagsList) {
+        userService = new UserService(accountUsername, accessToken);
+        GalleryItemList galleryItemList = new GalleryItemList(new ArrayList<>());
+        tagsList.getTagsList().stream().forEach(s -> galleryItemList.getData().addAll(userService.getImagesByTag(s, tagsList.getPage()).getItems()));
+        return galleryItemList;
     }
 
     @RequestMapping("/index")

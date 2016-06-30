@@ -159,7 +159,7 @@ public class UserService implements IUserService
     }
 
     @Override
-    public void getImagesByTag(String tagName, int page)
+    public TagData getImagesByTag(String tagName, int page)
     {
         System.out.println(String.format("----------------------------------------------------------------------------------------"));
         System.out.println(String.format("Getting #%s images from page %d...\n", tagName, page));
@@ -173,12 +173,16 @@ public class UserService implements IUserService
         {
             ResponseEntity<Tag> response = restTemplate.exchange(String.format("%s/gallery/t/%s/viral/%d", REST_SERVICE_URI, tagName, page), HttpMethod.GET, new HttpEntity<Object>(headers), Tag.class);
             System.out.println(String.format("There are %d images under tag #%s", response.getBody().getTagData().getItems().size(), tagName));
+
+            return response.getBody().getTagData();
         }
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during getting #%s images", tagName));
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
