@@ -1,6 +1,12 @@
 $(document).ready(function () {
     getImagesFromPage(0);
 
+    $('#imageVoteButton').popover({
+        html: true,
+        content: function () {
+            return $('#popoverContent').html();
+        }
+    });
 
     $('#loadMoreButton').click(function () {
         getImagesFromPage(parseInt($('#pageNumber').val()) + 1);
@@ -25,6 +31,16 @@ $(document).ready(function () {
 
 $(document).on('click','.imageContainer',function(e){
     getImageDataById($(this).find('#id').val());
+});
+
+$(document).on('click','.imgVote',function(e){
+    imageVote($(this).find('.state').val(), $('#voteState').val());
+});
+
+$('html').on('click', function(e) {
+    if (!$(e.target).parents('#imageVoteButton').length > 0 && typeof $(e.target).data('original-title') == 'undefined' && !$(e.target).parents().is('.popover.in')) {
+        $('#imageVoteButton').popover('hide');
+    }
 });
 
 function getImagesFromPage(pageNumber) {
@@ -107,24 +123,30 @@ function toggleFavourites(id) {
         url: "/image/togglefavourite",
         data: id,
         success: function (result) {
-            toggleFavourite(result.response);
+            setFavouritesButton(result.response);
         }
     });
 }
 
-function toggleFavourite(state) {
-    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
-    if(state == "favorited") {
-        $('#buttonFavouritesText').text('Remove from favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
-    } else if(state == "unfavorited") {
-        $('#buttonFavouritesText').text('Add to favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
-    } else {
+function imageVote(nextState, currentState) {
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/vote",
+        data: nextState,
+        success: function (result) {
+            setButtons(result.response);
+        }
+    });
+}
 
-    }
+function setButtons() {
+
 }
 
 function uploadImage(imageData) {
@@ -160,6 +182,36 @@ function parseDetail(detail) {
     return detail;
 }
 
+function setFavouritesButton(state) {
+    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
+    if(state == 'favorited') {
+        $('#buttonFavouritesText').text('Remove from favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-star-empty');
+    } else {
+        $('#buttonFavouritesText').text('Add to favourites');
+        toggleFavouriteButton.removeClass();
+        toggleFavouriteButton.addClass('glyphicon glyphicon-star');
+    }
+}
+
+function setVoteButton(state) {
+    var toggleVoteButton = $('#imageVoteButton').find('#buttonVoteIcon');
+    if(state == 'up') {
+        $('#buttonVoteText').text('You like it');
+        toggleVoteButton.removeClass();
+        toggleVoteButton.addClass('glyphicon glyphicon-thumbs-up');
+    } else if(state == 'down') {
+        $('#buttonVoteText').text('You don\'t like it');
+        toggleVoteButton.removeClass();
+        toggleVoteButton.addClass('glyphicon glyphicon-thumbs-down');
+    } else {
+        $('#buttonVoteText').text('You are neutral');
+        toggleVoteButton.removeClass();
+        toggleVoteButton.addClass('glyphicon glyphicon-asterisk');
+    }
+}
+
 function displayImageDetails(imageDetails) {
     var table = $('#imageDetailsTable');
     table.find('#imageId').text(parseDetail(imageDetails.id));
@@ -171,20 +223,20 @@ function displayImageDetails(imageDetails) {
     table.find('#imageWidth').text(parseDetail(imageDetails.width));
     table.find('#imageLink').text(parseDetail(imageDetails.link));
     table.find('#imageHeight').text(parseDetail(imageDetails.height));
-    table.find('#imageVote').text(parseDetail(imageDetails.vote));
     table.find('#imageSize').text(parseDetail(imageDetails.size));
-    var toggleFavouriteButton = $('#toggleFavourite').find('#buttonFavouritesIcon');
-    if(imageDetails.favourite == true) {
-        $('#buttonFavouritesText').text('Remove from favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-close');
+
+    if(imageDetails.favorite == true) {
+        setFavouritesButton('favorited');
     } else {
-        $('#buttonFavouritesText').text('Add to favourites');
-        toggleFavouriteButton.removeClass();
-        toggleFavouriteButton.addClass('glyphicon glyphicon-eye-open');
+        setFavouritesButton('unfavorited')
     }
+
     table.find('#imageDetailsImage').empty();
     var imageToAdd = '<a href="'+imageDetails.link+'"><img class ="img-thumbnail" src="'+imageDetails.link+'"/></a>';
     table.find('#imageDetailsImage').append(imageToAdd);
+
+    setVoteButton(imageDetails.vote);
+    $('#voteState').val(imageDetails.vote);
+
     $('#imageModal').modal('toggle');
 }

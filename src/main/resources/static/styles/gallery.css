@@ -32,7 +32,12 @@
 #buttonPanel > a {
     width: 80px;
 }
+
 #buttonPanel {
     width: 100px;
     padding: 10px;
+}
+
+#popoverContent {
+    display: none;
 }
