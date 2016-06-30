@@ -37,7 +37,7 @@ public class UserService implements IUserService
 
         try
         {
-            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/gallery/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
+            ResponseEntity<Image> response = restTemplate.exchange(String.format("%s/image/%s", REST_SERVICE_URI, id), HttpMethod.GET, new HttpEntity<Object>(headers), Image.class);
             System.out.println(String.format("Your image is here: %s", response.getBody().getImageData().getLink()));
             return response.getBody().getImageData();
         }
@@ -225,6 +225,33 @@ public class UserService implements IUserService
         catch (HttpClientErrorException e)
         {
             System.out.println(String.format("Error occurred during favouriting/unfavouriting iamge with id #%s", imageId));
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public ImagesList getPopularImagesByPage(int page)
+    {
+        System.out.println(String.format("----------------------------------------------------------------------------------------"));
+        System.out.println(String.format("Getting popular images from page %d...\n", page));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        try
+        {
+            ResponseEntity<ImagesList> response = restTemplate
+                    .exchange(String.format("%s/gallery/hot/viral/%d.json", REST_SERVICE_URI, page), HttpMethod.GET, new HttpEntity<>(headers), ImagesList.class);
+            System.out.println(String.format("%d popular images from page %d has been loaded", response.getBody().getImages().size(), page));
+            return response.getBody();
+        }
+        catch (HttpClientErrorException e)
+        {
+            System.out.println(String.format("Error occurred during getting popular images from page %d", page));
             e.printStackTrace();
         }
 

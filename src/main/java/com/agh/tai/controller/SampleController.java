@@ -85,6 +85,14 @@ public class SampleController {
         return userService.getUserFavourites();
     }
 
+    @RequestMapping(value="/public/gallery", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody ImagesList getImagesFromPublicGallery(@RequestHeader(value = "access_token") String accessToken,
+                                                      @RequestHeader(value = "account_username") String accountUsername,
+                                                               @RequestBody String pageNumber) {
+        userService = new UserService(accountUsername, accessToken);
+        return userService.getPopularImagesByPage(Integer.valueOf(pageNumber));
+    }
+
     @RequestMapping("/index")
     String index(Model model, HttpSession session) {
         model.addAttribute("message", "Logged in as " + session.getAttribute("account_username"));
