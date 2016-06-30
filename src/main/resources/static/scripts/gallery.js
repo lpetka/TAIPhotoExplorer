@@ -145,10 +145,6 @@ function imageVote(nextState, currentState) {
     });
 }
 
-function setButtons() {
-
-}
-
 function uploadImage(imageData) {
     if(!!imageData) {
         location.reload()
@@ -161,7 +157,8 @@ function removeImage(imageId) {
     if(imageId != null) {
         $(':input').filter(function () {
             return this.value == imageId.response;
-        }).parent().remove()
+        }).parent().remove();
+        $('#imageModal').modal('toggle');
     } else {
         alert("Error occured during removing image...\nPlease try again later.")
     }

@@ -12,6 +12,9 @@
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+            th:src="@{/webjars/bootstrap/3.3.6/js/bootstrap.min.js}"></script>
+
     <script src="../scripts/favourites.js" th:src="@{/scripts/favourites.js}"></script>
 </head>
 
@@ -64,7 +67,7 @@
             <div class="modal-body">
                 <table id="imageDetailsTable">
                     <tr>
-                        <td id="imageDetailsImage" rowspan="7"></td>
+                        <td id="imageDetailsImage" rowspan="6"></td>
                     </tr>
                     <tr>
                         <td class="imageDetails">ID:</td>
@@ -75,14 +78,14 @@
                     <tr>
                         <td class="imageDetails">Title:</td>
                         <td id="imageTitle"></td>
-                        <td class="imageDetails">Uploaded by:</td>
-                        <td id="imageUploader"></td>
+                        <td class="imageDetails">NSFW:</td>
+                        <td id="imageNsfw"></td>
                     </tr>
                     <tr>
                         <td class="imageDetails">Description:</td>
                         <td id="imageDescription"></td>
-                        <td class="imageDetails">Section:</td>
-                        <td id="imageSection"></td>
+                        <td class="imageDetails">Type:</td>
+                        <td id="imageType"></td>
                     </tr>
                     <tr>
                         <td class="imageDetails">Width:</td>
@@ -93,38 +96,15 @@
                     <tr>
                         <td class="imageDetails">Height:</td>
                         <td id="imageHeight"></td>
-                        <td class="imageDetails">Vote:</td>
-                        <td id="imageVote">
-                            <input type="hidden" id="voteState" />
-                            <a href="#" id="imageVoteButton" class="btn btn-default btn-sm" role="button"
-                               data-placement="bottom" data-toggle="popover" title="Vote for image!">
-                                <span id="buttonVoteIcon"></span>
-                                <span id="buttonVoteText">TEST</span>
-                            </a>
-                            <div id="popoverContent">
-                                <a href="#" role="button" class="imgVote btn btn-sm btn-default">
-                                    <input class="state" type="hidden" value="up"/>
-                                    <span class="glyphicon glyphicon-thumbs-up"></span>Like
-                                </a>
-                                <a href="#" role="button" class="imgVote btn btn-sm btn-default">
-                                    <input class="state" type="hidden" value="down"/>
-                                    <span class="glyphicon glyphicon-thumbs-down"></span>Disike
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="imageDetails">Size:</td>
                         <td id="imageSize"></td>
-                        <td class="imageDetails">Favourite:</td>
-                        <td id="imageFavourite">
-                            <button id="toggleFavourite" type="button" class="btn btn-default btn-sm">
-                                <span id="buttonFavouritesIcon"></span>
-                                <span id="buttonFavouritesText"></span>
-                            </button>
-                        </td>
                     </tr>
                 </table>
+            </div>
+            <div class="modal-footer">
+                <button id="removeFromFavouritesButton" type="button" class="btn btn-default btn-sm">
+                    <span class="glyphicon glyphicon-star-empty"></span> Remove from favourites
+                </button>
             </div>
         </div>
     </div>
