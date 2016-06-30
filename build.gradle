@@ -14,18 +14,11 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'spring-boot'
 
-task stage(type: Copy, dependsOn: [clean, build]) {
-	from jar.archivePath
-	into project.rootDir
-	rename {
-		'app.jar'
-	}
+task stage {
+	dependsOn build
 }
-stage.mustRunAfter(clean)
 
-clean << {
-	project.file('app.jar').delete()
-}
+
 
 jar {
 	baseName = 'taiphotoexplorer'
