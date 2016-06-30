@@ -13,10 +13,18 @@
     font-weight: bold;
 }
 
+.imageDetails + td{
+    max-width: 200px;
+}
+
 #imageDetailsTable {
     width: 100%;
     border-spacing: 10px;
     border-collapse: separate;
+}
+
+#imageDetailsTable > tr > td {
+    max-width: ;
 }
 
 #imageDetailsImage > a > img {
@@ -26,7 +34,7 @@
 }
 
 .modal-dialog {
-    width: 750px;
+    width: 850px;
 }
 
 #buttonPanel > a {
