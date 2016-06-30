@@ -2,6 +2,22 @@ $(document).ready(function () {
     parseUrl();
     getImagesFromPage(0, 0, 0);
 
+    $('#imageVoteButton').click(function () {
+        $('.imgVote').removeClass('active');
+        if($('#voteState').val() == 'up') {
+            $('.imgVote:nth-of-type(1)').addClass('active');
+        } else {
+            $('.imgVote:nth-of-type(2)').addClass('active');
+        }
+    });
+    
+    $('#imageVoteButton').popover({
+        html: true,
+        content: function () {
+            return $('#popoverContent').html();
+        }
+    });
+
     $('#loadMoreButton').click(function () {
         var pageDetails = $('#pageNumber').val().split('/');
         getImagesFromPage(
@@ -19,6 +35,17 @@ $(document).ready(function () {
 
 $(document).on('click','.imageContainer',function(e){
     getImageDataById($(this).find('#id').val());
+});
+
+$(document).on('click','.imgVote',function(e){
+    $(this).parent().find('.imgVote').removeClass('active');
+    imageVote($(this).find('.state').val(), $('#voteState').val(), $(this));
+});
+
+$('html').on('click', function(e) {
+    if (!$(e.target).parents('#imageVoteButton').length > 0 && typeof $(e.target).data('original-title') == 'undefined' && !$(e.target).parents().is('.popover.in')) {
+        $('#imageVoteButton').popover('hide');
+    }
 });
 
 function parseUrl() {
@@ -75,7 +102,7 @@ function getImageDataById(id) {
         },
         contentType: 'application/json',
         dataType: 'json',
-        url: "/image/details",
+        url: "/image/gallerydetails",
         data: id,
         success: function (result) {
             displayImageDetails(result);
@@ -98,6 +125,31 @@ function toggleFavourites(id) {
             setFavouritesButton(result.response);
         }
     });
+}
+
+function imageVote(nextState, currentState, buttonClicked) {
+    if(nextState == '')
+        nextState = currentState;
+    $.ajax({
+        type: "POST",
+        headers: {
+            "access_token" : JSON.parse(sessionStorage.getItem("myParams")).access_token,
+            "account_username": JSON.parse(sessionStorage.getItem("myParams")).account_username
+        },
+        contentType: 'application/json',
+        dataType: 'json',
+        url: "/image/vote",
+        data: JSON.stringify({id : $('#imageId').text(), vote : nextState}),
+        success: function (result) {
+            setButtons(result.vote, currentState, buttonClicked);
+        }
+    });
+}
+
+function setButtons(nextState, currentState, buttonClicked) {
+    $('#voteState').val(nextState);
+    buttonClicked.addClass('active');
+    setVoteButton(nextState);
 }
 
 function appendImages(data, pageNumber, photosQuantity, maxPhotos) {
@@ -154,7 +206,7 @@ function displayImageDetails(imageDetails) {
     table.find('#imageId').text(parseDetail(imageDetails.id));
     table.find('#imageViews').text(parseDetail(imageDetails.views));
     table.find('#imageTitle').text(parseDetail(imageDetails.title));
-    table.find('#imageName').text(parseDetail(imageDetails.name));
+    table.find('#imageUploader').text(parseDetail(imageDetails.account_url));
     table.find('#imageDescription').text(parseDetail(imageDetails.description));
     table.find('#imageSection').text(parseDetail(imageDetails.section));
     table.find('#imageWidth').text(parseDetail(imageDetails.width));
